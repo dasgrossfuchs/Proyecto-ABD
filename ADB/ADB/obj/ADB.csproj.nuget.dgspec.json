@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\agust\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj": {}
+    "C:\\Users\\Ana Luisa\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj": {}
   },
   "projects": {
-    "C:\\Users\\agust\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj": {
+    "C:\\Users\\Ana Luisa\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\agust\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj",
+        "projectUniqueName": "C:\\Users\\Ana Luisa\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj",
         "projectName": "ADB",
-        "projectPath": "C:\\Users\\agust\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj",
-        "packagesPath": "C:\\Users\\agust\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\agust\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\obj\\",
+        "projectPath": "C:\\Users\\Ana Luisa\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\ADB.csproj",
+        "packagesPath": "C:\\Users\\Ana Luisa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ana Luisa\\Documents\\GitHub\\Proyecto-ABD\\ADB\\ADB\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\agust\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ana Luisa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
