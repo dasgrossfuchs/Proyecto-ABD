@@ -6,8 +6,7 @@ namespace ADB
 {
     class Interprete
     {
-        private string Com;
-        public void inicio(string comando)
+        public void inicio(string comando)//cambiar esto a string, que todos los caminos regresen la instruccion correspondiente
         {
             string[] palabras = comando.Split(' ');
             switch (palabras[0].ToLower())
@@ -109,6 +108,7 @@ namespace ADB
                 default:
                     Console.WriteLine("Error procesando comando en:\'"+palabras[0].ToUpper() + "\'");
                     break;
+
             }
         }
     }
