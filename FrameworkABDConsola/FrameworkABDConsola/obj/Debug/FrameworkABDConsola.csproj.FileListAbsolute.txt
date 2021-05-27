@@ -21,3 +21,4 @@ C:\Users\Ana Luisa\Documents\GitHub\Proyecto-ABD\FrameworkABDConsola\FrameworkAB
 C:\Users\Ana Luisa\Documents\GitHub\Proyecto-ABD\FrameworkABDConsola\FrameworkABDConsola\obj\Debug\FrameworkABDConsola.csproj.CopyComplete
 C:\Users\Ana Luisa\Documents\GitHub\Proyecto-ABD\FrameworkABDConsola\FrameworkABDConsola\obj\Debug\FrameworkABDConsola.exe
 C:\Users\Ana Luisa\Documents\GitHub\Proyecto-ABD\FrameworkABDConsola\FrameworkABDConsola\obj\Debug\FrameworkABDConsola.pdb
+C:\Users\Ana Luisa\Documents\GitHub\Proyecto-ABD\FrameworkABDConsola\FrameworkABDConsola\bin\Debug\MySqlBackup.dll

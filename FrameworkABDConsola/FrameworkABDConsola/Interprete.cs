@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace FrameworkABDConsola
 {
     class Interprete
     {
-        private string Com;
-        public void inicio(string comando)
+        public void inter(string uid, string pwd, string comando)
         {
+            string[] tablas;
+            List<string> tab = new List<string>();
+            
+            tab.Clear();
             string[] palabras = comando.Split(' ');
             switch (palabras[0].ToLower())
             {
@@ -18,42 +22,44 @@ namespace FrameworkABDConsola
                     switch (palabras[1].ToLower())
                     {
                         case "base":
-                            if (palabras.Length == 4)
-                            {
-                                //SALVAR BASE A ARCHIVO
-                                string archivo = palabras[3];
-
+                                //SALVAR BASE dbname A ARCHIVO
+                                Backup(uid,pwd,palabras[2],palabras[4]);
                                 //backup de todas las bases de datos al archivo
-                            }
-                            else
-                            {
+                            break;
+                        case "bases":
                                 //SALVAR BASE NOMBRE,NOMBRE,NOMBRE A ARCHIVO
                                 string[] nombres = palabras[2].Split(',');
                                 string archivo = palabras[4];
 
+                                for (int i = 0; i < nombres.Length; i++)
+                                {
+                                    Backup(uid, pwd, nombres[i], archivo + (i+1));
+                                }
+                                Console.WriteLine("Bases salvadas!");
+                                Console.WriteLine("Salvadas en "+archivo+"1..."+nombres.Length);
                                 //backup de todas las bases de datos que conforman a nombres al archivo
-                            }
                             break;
                         case "tabla":
-                            if (palabras.Length == 5)
-                            {
-                                //SALVAR TABLA DBNAME A ARCHIVO
-                                string dbname = palabras[2];
-                                string archivo = palabras[3];
+                            //SALVAR TABLA DBNAME A ARCHIVO
+                            tablas = palabras[3].Split(',');
+                            TableBu(uid, pwd, palabras[2], palabras[4], tab);
+                            Console.WriteLine("Tablas guardadas exitosamente como \"" + palabras[4] + ".sql\"");
+                            //backup de todas las tablas de la base de datos nombrada dbname al archivo
 
-                                //backup de todas las tablas de la base de datos nombrada dbname al archivo
-                            }
-                            else
-                            {
+                            break;
+                        case "tablas":
+
                                 //SALVAR TABLA DBNAME TABLA,TABLA,TABLA A ARCHIVO
-                                string dbname = palabras[2];
-                                string[] tablas = palabras[3].Split(',');
-                                string archivo = palabras[5];
-                                foreach (var item in tablas)
-                                {
-                                    //backup de las tablas nombradas en la base de datos dbname al archivo
-                                }
+                            tablas = palabras[3].Split(',');
+                            foreach (string item in tablas)
+                            {
+                                tab.Add(item);
                             }
+                            TableBu(uid, pwd, palabras[2], palabras[5], tab);
+                            Console.WriteLine("Tablas guardadas exitosamente como \""+palabras[5]+".sql\"");
+                            //backup de las tablas nombradas en la base de datos dbname al archivo
+                                
+                            
 
                             break;
                         default:
@@ -65,42 +71,34 @@ namespace FrameworkABDConsola
                     switch (palabras[1].ToLower())
                     {
                         case "base":
-                            if (palabras.Length == 4)
-                            {
-                                //RECUPERAR BASE DE ARCHIVO
-                                string archivo = palabras[3];
-
+                                //RECUPERAR BASE dbname DE ARCHIVO
+                                Restore(uid, pwd, palabras[2], palabras[4]);
                                 //recuperacion de todas las bases de datos desde archivo
-                            }
-                            else
-                            {
-                                //RECUPERAR BASE NOMBRE,NOMBRE,NOMBRE DE ARCHIVO
-                                string[] nombres = palabras[2].Split(',');
-                                string archivo = palabras[4];
+                                break;
+                        case "bases":
 
-                                //recuperacion de todas las bases de datos que conforman a nombres desde archivo
+                            //RECUPERAR BASE NOMBRE,NOMBRE,NOMBRE DE ARCHIVO
+                            string[] nombres = palabras[2].Split(',');
+                            string archivo = palabras[4];
+
+                            for (int i = 0; i < nombres.Length; i++)
+                            {
+                                Restore(uid, pwd, nombres[i], archivo + (i + 1));
                             }
+                            Console.WriteLine("Bases salvadas!");
+                            Console.WriteLine("Salvadas en " + archivo + "1..." + nombres.Length);
+
+                            //recuperacion de todas las bases de datos que conforman a nombres desde archivo
+
                             break;
                         case "tabla":
-                            if (palabras.Length == 5)
-                            {
-                                //RECUPERAR TABLA DBNAME DE ARCHIVO
-                                string dbname = palabras[2];
-                                string archivo = palabras[3];
-
-                                //recuperacion de todas las tablas de la base de datos nombrada dbname desde archivo
-                            }
-                            else
-                            {
-                                //RECUPERAR TABLA DBNAME TABLA,TABLA,TABLA DE ARCHIVO
-                                string dbname = palabras[2];
-                                string[] tablas = palabras[3].Split(',');
-                                string archivo = palabras[5];
-                                foreach (var item in tablas)
-                                {
-                                    //recuperacion de las tablas nombradas en la base de datos dbname desde archivo
-                                }
-                            }
+                            //RECUPERAR TABLA DBNAME DE ARCHIVO
+                            Restore(uid, pwd, palabras[2], palabras[4]);
+                            //recuperacion de todas las tablas de la base de datos nombrada dbname desde archivo
+                            
+                            break;
+                        case "tablas":
+                            Restore(uid, pwd, palabras[2], palabras[4]);
 
                             break;
                         default:
@@ -111,6 +109,99 @@ namespace FrameworkABDConsola
                 default:
                     Console.WriteLine("Error procesando comando en:\'" + palabras[0].ToUpper() + "\'");
                     break;
+                case "salir":
+
+                    break;
+            }
+        }
+        public void Backup(string uid, string pwd, string db, string ruta)
+        {
+            string file = db + ".sql";
+            string constring = "server=localhost;uid=" + uid + ";pwd=" + pwd + ";database=" + db+";";
+            string[] extension = ruta.Split('.');
+            if (extension.Length != 2 || extension[1] != "sql")
+            {
+                file = extension[0] + ".sql";
+            }
+            else
+            {
+                file = ruta;
+            }
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        
+                        cmd.Connection = conn;
+                        conn.Open();
+
+                        Console.WriteLine("Conexion establecida");
+                        mb.ExportToFile(file);
+                        Console.WriteLine("guardado como : " + file);
+                        conn.Close();
+                        Console.WriteLine("Conexion finalizada");
+                    }
+                }
+            }
+        }
+        public void Restore(string uid, string pwd, string db, string ruta)
+        {
+            string file = db + ".sql";
+            string constring = "server=localhost;uid=" + uid + ";pwd=" + pwd + ";database=" + db+";";
+            string[] extension = ruta.Split('.');
+            if (extension.Length != 2 || extension[1] != "sql")
+            {
+                file = extension[0] + ".sql";
+            }
+            else
+            {
+                file = ruta;
+            }
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        Console.WriteLine("Conexion establecida");
+                        mb.ImportFromFile(file);
+                        Console.WriteLine("Importado de : " + file);
+                        conn.Close();
+                        Console.WriteLine("Conexion finalizada");
+                    }
+                }
+            }
+        }
+
+        public void TableBu(string uid, string pwd, string db, string ruta,List <string> tablas)
+        {
+            string file = db + ".sql";
+            string constring = "server=localhost;uid=" + uid + ";pwd=" + pwd + ";database=" + db + ";";
+            string[] extension = ruta.Split('.');
+            if (extension.Length != 2 || extension[1] != "sql")
+            {
+                file = extension[0] + ".sql";
+            }
+            else
+            {
+                file = ruta;
+            }
+            using (MySqlConnection conn = new MySqlConnection(constring))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    using (MySqlBackup mb = new MySqlBackup(cmd))
+                    {
+                        cmd.Connection = conn;
+                        conn.Open();
+                        mb.ExportInfo.TablesToBeExportedList = tablas;
+                        mb.ExportToFile(file);
+                    }
+                }
             }
         }
     }

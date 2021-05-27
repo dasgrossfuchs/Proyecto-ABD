@@ -11,27 +11,40 @@ namespace FrameworkABDConsola
     {
         static void Main(string[] args)
         {
-            MySqlConnection conn;
+            
+
+            Instrucciones inst = new Instrucciones();
+            bool loop = true;
             Console.WriteLine("servidor : LOCALHOST");
             Console.Write("Id usuario : ");
             string uid = Console.ReadLine();
             Console.Write("contraseña : ");
             string pwd = Console.ReadLine();
-            string constr = "server=localhost; uid="+uid+";pwd="+pwd+";database=sakila";
-            try
+            Console.Clear();
+            inst.Impresion();
+            while (loop)
             {
-                conn = new MySqlConnection(constr);
-                conn.Open();
-                Console.WriteLine("Conexión exitosa!");
-                mysqlback
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
+                try
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Esperando comando...");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    string comando = Console.ReadLine();
+                    Interprete inter = new Interprete();
+                    inter.inter(uid, pwd, comando);
+
+
+
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
             }
             
             
         }
+        
     }
 }
